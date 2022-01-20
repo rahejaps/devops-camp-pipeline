@@ -52,7 +52,7 @@ pipeline {
         stage('Database docker build') {
             steps {
                 echo "Building database image"
-withCredentials([usernameColonPassword(credentialsId: 'praheja-harbor-auth', variable: 'HARBOR-AUTH')]) {
+                withCredentials([usernameColonPassword(credentialsId: 'praheja-harbor-auth', variable: 'HARBOR-AUTH')]) {
                     script {
                         docker.build('$DB_IMAGE_NAME-$COMMIT_HASH', '-f ./app/Dockerfile ./afs-labs-student')
                         docker.withRegistry('https://$HARBOR_REGISTRY', 'praheja-harbor-auth') {
@@ -62,7 +62,7 @@ withCredentials([usernameColonPassword(credentialsId: 'praheja-harbor-auth', var
                     }
                 }
             }
-post {
+            post {
                 always {
                     echo "Clean local $DB_IMAGE_NAME image"
                     script {
@@ -87,7 +87,7 @@ post {
             }
         }
     }
-    post {
+        post {
         cleanup {
             echo "Clean workspace"
             sh 'rm -rf .git ./*'
